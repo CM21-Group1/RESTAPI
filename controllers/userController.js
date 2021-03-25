@@ -25,6 +25,7 @@ function createUser(req, callback) {
     });
 }
 
+
 function getUserById(req, callback) {
     let user_id = req.params.id;
     let o_id = new ObjectId(user_id);
@@ -38,7 +39,31 @@ function getUserById(req, callback) {
     });
 }
 
+function getUserByUsername(req, callback) {
+    User.findOne({ username: req.body.username}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+
+        callback(result);
+    });
+}
+
+function getUserPwd(req, callback) {
+    User.find({ username: req.body.username, password: req.body.password}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(false);
+        }
+
+        callback(result);
+    });
+}
+
 
 exports.getAllUsers = getAllUsers;
 exports.createUser = createUser;
 exports.getUserById = getUserById;
+exports.getUserByUsername = getUserByUsername;
+exports.getUserPwd = getUserPwd;
