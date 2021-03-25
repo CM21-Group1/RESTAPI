@@ -5,17 +5,11 @@ const userController = require('../controllers/userController');
 
 // Hello world test route
 router.get('/', bodyParser, function (req, res) {
-    res.send("Hello World");
+    res.send("Acme Electronic  Supermarket - REST API");
 });
 
 router.get('/users', bodyParser, function (req, res) {
     userController.getAllUsers(req, (result) => {
-        res.send(result);
-    });
-});
-
-router.post('/user', bodyParser, function (req, res) {
-    userController.createUser(req, (result) => {
         res.send(result);
     });
 });
