@@ -51,8 +51,9 @@ router.post('/login', bodyParser, function (req, res, next) {
         }else{
 
             superMarketController.getPublicKey(req, (superMarketPublicKey) => {
-                const id       = result["_id"];        //id from db
-                const username = result["username"];   //username from db
+                let id = result[0]._id;        //id from db
+                let username = result[0].username;   //username from db
+                console.log(id)
                 res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
             });
         }
