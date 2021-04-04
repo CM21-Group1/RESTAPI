@@ -11,7 +11,12 @@ router.get('/keys', bodyParser, function (req, res, next) {
 });
 
 router.get('/getPublicKey', bodyParser, function (req, res, next) {
+    superMarketController.getPublicKey(req, (result) => {
+        res.send(result);
+    });
+});
 
+router.post('/purchase', bodyParser, function (req, res, next) {
     superMarketController.getPublicKey(req, (result) => {
         res.send(result);
     });

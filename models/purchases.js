@@ -1,15 +1,16 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-var userSchema = new Schema({
-    //Array produtos
-    //Array vouchers
-    //Id supermarket
+let purchaseSchema = new Schema({
     idUser: {type: String, required: true},
-    password: {type: String, required: true},
-    payment_card: {type: String, required: true}
+    products: [{
+        productId: {type: String, required: true},
+        price: {type: Number, required: true},
+        name: {type: String, required: true}
+    }],
+    totalPrice: {type: Number, required: true}
 });
 
-var User = mongoose.model('users', userSchema);
+let Purchase = mongoose.model('purchases', purchaseSchema);
 
-module.exports = User;
+module.exports = Purchase;

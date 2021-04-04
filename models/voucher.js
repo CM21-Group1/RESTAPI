@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var voucherSchema = new Schema({
     //ID user
     //ID voucher
+    userId: {type: String, required: true}
 });
 
-var User = mongoose.model('users', userSchema);
+var Voucher = mongoose.model('vouchers', voucherSchema);
 
-module.exports = User;
+module.exports = Voucher;
