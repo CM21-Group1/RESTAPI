@@ -18,9 +18,11 @@ router.post('/register', bodyParser, function (req, res, next) {
 router.post('/register', bodyParser, function (req, res, next) {
 
     userController.createUser(req, (result) => {
-        const id       = result._id;        //id from db
-        const username = result.username;   //username from db (to figure out if admin)
-        res.json({ auth: true, id: id, username:username});
+        superMarketController.getPublicKey(req, (superMarketPublicKey) => {
+            const id       = result[0]._id;        //id from db
+            const username = result[0].username;   //username from db
+            res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
+        });
     });
 
 });
