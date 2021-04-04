@@ -19,8 +19,9 @@ router.post('/register', bodyParser, function (req, res, next) {
 
     userController.createUser(req, (result) => {
         superMarketController.getPublicKey(req, (superMarketPublicKey) => {
-            const id       = result[0]._id;        //id from db
-            const username = result[0].username;   //username from db
+            const id       = result["_id"];        //id from db
+            const username = result["username"];   //username from db
+            console.log(id);
             res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
         });
     });
@@ -50,8 +51,8 @@ router.post('/login', bodyParser, function (req, res, next) {
         }else{
 
             superMarketController.getPublicKey(req, (superMarketPublicKey) => {
-                const id       = result[0]._id;        //id from db
-                const username = result[0].username;   //username from db
+                const id       = result["_id"];        //id from db
+                const username = result["username"];   //username from db
                 res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
             });
         }
