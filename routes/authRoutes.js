@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const usercontroller = require('../controllers/userController');
+const userController = require('../controllers/userController');
+const superMarketController = require('../controllers/supermarketController');
 const bodyParser = require('body-parser').json();
-
 
 router.post('/register', bodyParser, function (req, res, next) {
 
-    usercontroller.getUserByUsername(req, (result) => {
+    userController.getUserByUsername(req, (result) => {
         if(result === undefined || result == null || result.length <= 0){
             next();
         }else{
@@ -17,7 +17,7 @@ router.post('/register', bodyParser, function (req, res, next) {
 
 router.post('/register', bodyParser, function (req, res, next) {
 
-    usercontroller.createUser(req, (result) => {
+    userController.createUser(req, (result) => {
         const id       = result._id;        //id from db
         const username = result.username;   //username from db (to figure out if admin)
         res.json({ auth: true, id: id, username:username});
@@ -28,7 +28,7 @@ router.post('/register', bodyParser, function (req, res, next) {
 //Check if username is already taken
 router.post('/login', bodyParser, function (req, res, next) {
 
-    usercontroller.getUserByUsername(req, (result) => {
+    userController.getUserByUsername(req, (result) => {
         if(result === undefined || result == null || result.length <= 0){
             res.status(404).send({ message: "Username Not found." });
         }else{
@@ -41,14 +41,17 @@ router.post('/login', bodyParser, function (req, res, next) {
 //Check if password is correct
 router.post('/login', bodyParser, function (req, res, next) {
 
-    usercontroller.getUserPwd(req, (result) => {
+    userController.getUserPwd(req, (result) => {
 
         if(result === undefined || result == null || result.length <= 0){
             res.status(404).send({ message: "Password incorrect" });
         }else{
-            const id       = result[0]._id;        //id from db
-            const username = result[0].username;   //username from db
-            res.json({ auth: true, id: id, username: username});
+
+            superMarketController.getPublicKey(req, (superMarketPublicKey) => {
+                const id       = result[0]._id;        //id from db
+                const username = result[0].username;   //username from db
+                res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
+            });
         }
     });
 
@@ -57,6 +60,5 @@ router.post('/login', bodyParser, function (req, res, next) {
 router.post('/logout', bodyParser, function (req, res, next) {
     res.json({ auth: false, token: null });
 });
-
 
 module.exports = router;
