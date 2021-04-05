@@ -1,6 +1,8 @@
 const {ObjectId} = require("bson");
 let crypto = require('crypto');
 const Supermarket = require("../models/supermarket");
+const Purchase = require("../models/purchase");
+const Voucher = require("../models/voucher");
 
 const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 2048,
@@ -41,5 +43,53 @@ function getPublicKey(req, callback) {
 
 }
 
+function createPurchase(req, callback) {
+    req.body.userId = req.params.userId;
+    req.body.totalPrice = 50;
+
+    let purchase = new Purchase(req.body);
+    purchase.save(function (err, result) {
+        if (err) {
+            console.log(err);
+            callback(err);
+        } else {
+            callback(result);
+        }
+    });
+}
+
+function getPurchaseByUserId(req, callback) {
+    let user_id = req.params.userId;
+
+    Purchase.find({userId: user_id}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        callback(result);
+    });
+}
+
+function createVoucherByUserId(req, callback) {
+    let userId = req.params.userId;
+
+    let body = {
+        userId: userId
+    }
+
+    let voucher = new Voucher(body);
+    voucher.save(function (err, result) {
+        if (err) {
+            console.log(err);
+            callback(err);
+        } else {
+            callback(result);
+        }
+    });
+}
+
 exports.generateSupermarketKeys = generateSupermarketKeys;
 exports.getPublicKey = getPublicKey;
+exports.createPurchase = createPurchase;
+exports.getPurchaseByUserId = getPurchaseByUserId;
+exports.createVoucherByUserId = createVoucherByUserId;

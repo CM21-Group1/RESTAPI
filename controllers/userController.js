@@ -25,7 +25,6 @@ function createUser(req, callback) {
     });
 }
 
-
 function getUserById(req, callback) {
     let user_id = req.params.id;
     let o_id = new ObjectId(user_id);
@@ -60,7 +59,6 @@ function getUserPwd(req, callback) {
         callback(result);
     });
 }
-
 
 exports.getAllUsers = getAllUsers;
 exports.createUser = createUser;
