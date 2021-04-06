@@ -19,6 +19,12 @@ router.get('/getPublicKey', bodyParser, function (req, res, next) {
     });
 });
 
+router.get('/purchase/:userId', bodyParser, function (req, res, next) {
+    superMarketController.getPurchaseByUserId(req, (result) => {
+        res.send(result);
+    });
+});
+
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     superMarketController.createPurchase(req, (result) => {
         resultCreatePurchase = result;
