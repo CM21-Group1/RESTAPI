@@ -92,6 +92,18 @@ function getProducts(req, callback) {
     });
 }
 
+function createProduct(req, callback) {
+    let product = new Product(req.body);
+    product.save(function (err, result) {
+        if (err) {
+            console.log(err);
+            callback(err);
+        } else {
+            callback(result);
+        }
+    });
+}
+
 function createVoucherByUserId(req, callback) {
     let userId = req.params.userId;
 
@@ -117,3 +129,4 @@ exports.getPurchaseByUserId = getPurchaseByUserId;
 exports.createVoucherByUserId = createVoucherByUserId;
 exports.getVoucherByUserId = getVoucherByUserId;
 exports.getProducts = getProducts;
+exports.createProduct = createProduct;

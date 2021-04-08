@@ -75,4 +75,10 @@ router.get('/products', bodyParser, function (req, res, next) {
     });
 });
 
+router.post('/product', bodyParser, function (req, res, next) {
+    superMarketController.createProduct(req, (result) => {
+        res.send(result);
+    });
+});
+
 module.exports = router;
