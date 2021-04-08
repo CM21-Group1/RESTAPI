@@ -107,19 +107,27 @@ function createProduct(req, callback) {
 function createVoucherByUserId(req, callback) {
     let userId = req.params.userId;
 
+    let numVoucAux = req.body.num_vouchers;
+    console.log("CREATE O NUMERO DE VOUCHERS" + req.body.num_vouchers);
+
     let body = {
         userId: userId
     }
 
-    let voucher = new Voucher(body);
-    voucher.save(function (err, result) {
-        if (err) {
-            console.log(err);
-            callback(err);
-        } else {
-            callback(result);
-        }
-    });
+    while (numVoucAux >= 1){
+    console.log("Create voucher number "+numVoucAux );
+        let voucher = new Voucher(body);
+        voucher.save(function (err, result) {
+            if (err) {
+                console.log(err);
+                callback(err);
+            } else if (numVoucAux == 1){
+                callback(result);
+            }
+        });
+        numVoucAux--;
+    }
+
 }
 
 exports.generateSupermarketKeys = generateSupermarketKeys;

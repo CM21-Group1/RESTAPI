@@ -34,42 +34,83 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     });
 });
 
-router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+//Este não é  acho eu 
+/*router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     req.body.value = resultCreatePurchase.totalPrice;
-    userController.updateAccumulatedValue(req, (result) => {
+    /*userController.updateAccumulatedValue(req, (result) => {
         next();
     });
-});
+});*/
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     userController.getUserById(req, (result) => {
-        let accu_value = result.accumulatedValue;
-        // console.log(accu_value);
         // if ((accu_value + resultCreatePurchase['totalPrice']) / 100 >= 1) {
         //     next();
         // } else {
         //     console.log("Sem direito a voucher");
         //     res.send(result);
         // }
+
         let num_vouchers = Math.floor((result.accumulatedValue + resultCreatePurchase['totalPrice']) / 100);
 
         let accu_value_new = (result.accumulatedValue + resultCreatePurchase['totalPrice'] - (num_vouchers * 100)) % 100;
 
         req.body.value = accu_value_new;
+        req.body.num_vouchers = num_vouchers;
         userController.updateAccumulatedValue(req, (result) => {
-            console.log(num_vouchers);
-            console.log(accu_value_new);
+            console.log("NUM DE VOUCHERS QUE DEVE CRIAR" + num_vouchers);
+            console.log("VALOR ACUMULADOR" + accu_value_new);
             next();
         });
+
+        superMarketController.createVoucherByUserId(req, (result) => {
+            //res.send(result);
+        });
+
+
     });
 });
 
+
+/* Ver melhor a cena de ser sincrono
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    userController.getUserById(req, (result) => {
+        // if ((accu_value + resultCreatePurchase['totalPrice']) / 100 >= 1) {
+        //     next();
+        // } else {
+        //     console.log("Sem direito a voucher");
+        //     res.send(result);
+        // }
+        const myPromise = new Promise(function(){
+            let num_vouchers = Math.floor((result.accumulatedValue + resultCreatePurchase['totalPrice']) / 100);
+
+            let accu_value_new = (result.accumulatedValue + resultCreatePurchase['totalPrice'] - (num_vouchers * 100)) % 100;
+    
+            req.body.value = accu_value_new;
+            req.body.num_vouchers = num_vouchers;
+            userController.updateAccumulatedValue(req, (result) => {
+                console.log("NUM DE VOUCHERS QUE DEVE CRIAR" + num_vouchers);
+                console.log("VALOR ACUMULADOR" + accu_value_new);
+                next();
+            });
+        })
+       
+        myPromise.then(function(){
+            superMarketController.createVoucherByUserId(req, (result) => {
+                //res.send(result);
+            });
+        })
+
+    });
+});
+
+
+/*router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     superMarketController.createVoucherByUserId(req, (result) => {
         console.log("voucher criado");
         res.send(result);
     });
-});
+});*/
 
 // ----------------------------------------------------------------------POST-CREATE PURCHASE----------------------------------------------------------------------
 
