@@ -43,7 +43,7 @@ function updateAccumulatedValue(req, callback) {
     let user_id = req.params.userId;
     let o_id = new ObjectId(user_id);
 
-    User.findOneAndUpdate({_id :o_id}, {$inc : {'accumulatedValue' : value_to_accumulate}}, (err, result) => {
+    User.findOneAndUpdate({_id :o_id}, {'accumulatedValue' : value_to_accumulate}, (err, result) => {
         if (err) {
             console.log(err);
             callback(err);

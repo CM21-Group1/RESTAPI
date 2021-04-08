@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 let purchaseSchema = new Schema({
     userId: {type: String, required: true},
     products: [{
-        productId: {type: String, required: false},
+        _id: {type: String, required: false},
         price: {type: Number, required: false},
         name: {type: String, required: false}
     }],

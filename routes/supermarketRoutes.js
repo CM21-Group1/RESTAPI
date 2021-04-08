@@ -44,13 +44,23 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     userController.getUserById(req, (result) => {
         let accu_value = result.accumulatedValue;
-        console.log(accu_value);
-        if (accu_value % 100 === 0) {
+        // console.log(accu_value);
+        // if ((accu_value + resultCreatePurchase['totalPrice']) / 100 >= 1) {
+        //     next();
+        // } else {
+        //     console.log("Sem direito a voucher");
+        //     res.send(result);
+        // }
+        let num_vouchers = Math.floor((result.accumulatedValue + resultCreatePurchase['totalPrice']) / 100);
+
+        let accu_value_new = (result.accumulatedValue + resultCreatePurchase['totalPrice'] - (num_vouchers * 100)) % 100;
+
+        req.body.value = accu_value_new;
+        userController.updateAccumulatedValue(req, (result) => {
+            console.log(num_vouchers);
+            console.log(accu_value_new);
             next();
-        } else {
-            console.log("Sem direito a voucher");
-            res.send(result);
-        }
+        });
     });
 });
 
