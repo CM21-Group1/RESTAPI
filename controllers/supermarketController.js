@@ -45,7 +45,6 @@ function getPublicKey(req, callback) {
 
 function createPurchase(req, callback) {
     req.body.userId = req.params.userId;
-    req.body.totalPrice = 50;
 
     let purchase = new Purchase(req.body);
     purchase.save(function (err, result) {
@@ -62,6 +61,18 @@ function getPurchaseByUserId(req, callback) {
     let user_id = req.params.userId;
 
     Purchase.find({userId: user_id}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        callback(result);
+    });
+}
+
+function getVoucherByUserId(req, callback) {
+    let user_id = req.params.userId;
+
+    Voucher.find({userId: user_id}, (err, result) => {
         if (err) {
             console.log(err);
             callback(err);
@@ -93,3 +104,4 @@ exports.getPublicKey = getPublicKey;
 exports.createPurchase = createPurchase;
 exports.getPurchaseByUserId = getPurchaseByUserId;
 exports.createVoucherByUserId = createVoucherByUserId;
+exports.getVoucherByUserId = getVoucherByUserId;

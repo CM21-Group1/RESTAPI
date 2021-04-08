@@ -25,6 +25,8 @@ router.get('/purchase/:userId', bodyParser, function (req, res, next) {
     });
 });
 
+// ----------------------------------------------------------------------POST-CREATE PURCHASE----------------------------------------------------------------------
+
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     superMarketController.createPurchase(req, (result) => {
         resultCreatePurchase = result;
@@ -33,26 +35,36 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
 });
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
-    superMarketController.getPurchaseByUserId(req, (result) => {
-        let total = 0;
-        for (let i = 0; i < result.length; i++) {
-            total += result[i].totalPrice;
-        }
+    req.body.value = resultCreatePurchase.totalPrice;
+    userController.updateAccumulatedValue(req, (result) => {
+        next();
+    });
+});
 
-        if (total > 100) {
+router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    userController.getUserById(req, (result) => {
+        let accu_value = result.accumulatedValue;
+        console.log(accu_value);
+        if (accu_value % 100 === 0) {
             next();
         } else {
             console.log("Sem direito a voucher");
             res.send(result);
         }
-
-
     });
 });
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
-    superMarketController.createPurchase(req, (result) => {
+    superMarketController.createVoucherByUserId(req, (result) => {
         console.log("voucher criado");
+        res.send(result);
+    });
+});
+
+// ----------------------------------------------------------------------POST-CREATE PURCHASE----------------------------------------------------------------------
+
+router.get('/vouchers/:userId', bodyParser, function (req, res, next) {
+    superMarketController.getVoucherByUserId(req, (result) => {
         res.send(result);
     });
 });

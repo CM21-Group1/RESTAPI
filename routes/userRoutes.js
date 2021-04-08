@@ -14,7 +14,7 @@ router.get('/users', bodyParser, function (req, res) {
     });
 });
 
-router.get('/user/:id', bodyParser, function (req, res) {
+router.get('/user/:userId', bodyParser, function (req, res) {
     userController.getUserById(req, (result) => {
         res.send(result);
     });
