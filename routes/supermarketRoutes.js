@@ -70,7 +70,7 @@ router.get('/vouchers/:userId', bodyParser, function (req, res, next) {
 });
 
 router.get('/products', bodyParser, function (req, res, next) {
-    superMarketController.get(req, (result) => {
+    superMarketController.getProducts(req, (result) => {
         res.send(result);
     });
 });
