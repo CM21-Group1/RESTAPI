@@ -69,4 +69,10 @@ router.get('/vouchers/:userId', bodyParser, function (req, res, next) {
     });
 });
 
+router.get('/products', bodyParser, function (req, res, next) {
+    superMarketController.get(req, (result) => {
+        res.send(result);
+    });
+});
+
 module.exports = router;

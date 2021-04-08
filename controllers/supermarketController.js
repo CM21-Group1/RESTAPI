@@ -3,6 +3,7 @@ let crypto = require('crypto');
 const Supermarket = require("../models/supermarket");
 const Purchase = require("../models/purchase");
 const Voucher = require("../models/voucher");
+const Product = require("../models/product");
 
 const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 2048,
@@ -81,6 +82,16 @@ function getVoucherByUserId(req, callback) {
     });
 }
 
+function getProducts(req, callback) {
+    Product.find( {}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        callback(result);
+    });
+}
+
 function createVoucherByUserId(req, callback) {
     let userId = req.params.userId;
 
@@ -105,3 +116,4 @@ exports.createPurchase = createPurchase;
 exports.getPurchaseByUserId = getPurchaseByUserId;
 exports.createVoucherByUserId = createVoucherByUserId;
 exports.getVoucherByUserId = getVoucherByUserId;
+exports.getProducts = getProducts;
