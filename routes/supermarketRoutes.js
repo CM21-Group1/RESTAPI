@@ -34,6 +34,17 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     });
 });
 
+// NAO TESTADO
+router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    if(req.body.voucherId != null){
+        superMarketController.removeVoucherById(req, (result) => {
+            next();
+        });
+    }else{
+        next();
+    }
+});
+
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     req.body.value = resultCreatePurchase.totalPrice;
     userController.updateAccumulatedValue(req, (result) => {

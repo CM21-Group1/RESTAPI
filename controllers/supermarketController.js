@@ -122,6 +122,18 @@ function createVoucherByUserId(req, callback) {
     });
 }
 
+function removeVoucherById(req, callback) {
+    let voucherId = req.body.voucherId;
+
+    Voucher.findByIdAndRemove({_id: voucherId}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        callback(result);
+    });
+}
+
 exports.generateSupermarketKeys = generateSupermarketKeys;
 exports.getPublicKey = getPublicKey;
 exports.createPurchase = createPurchase;
@@ -130,3 +142,4 @@ exports.createVoucherByUserId = createVoucherByUserId;
 exports.getVoucherByUserId = getVoucherByUserId;
 exports.getProducts = getProducts;
 exports.createProduct = createProduct;
+exports.removeVoucherById = removeVoucherById;

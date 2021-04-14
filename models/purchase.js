@@ -9,6 +9,7 @@ let purchaseSchema = new Schema({
         name: {type: String, required: false}
     }],
     totalPrice: {type: Number, required: false},
+    voucherId: {type: Number, required: false},
     createdAt: {type: Date, default: Date.now, required: false}
 });
 
