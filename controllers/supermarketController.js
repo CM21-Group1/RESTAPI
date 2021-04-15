@@ -44,6 +44,19 @@ function getPublicKey(req, callback) {
 
 }
 
+function getPrivateKey(req, callback) {
+
+    Supermarket.findOne({}, {}, { sort: { 'created_at' : -1 } }, function(err, result) {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+
+        callback(result['privateKey']);
+    });
+
+}
+
 function createPurchase(req, callback) {
     req.body.userId = req.params.userId;
 
@@ -136,6 +149,7 @@ function removeVoucherById(req, callback) {
 
 exports.generateSupermarketKeys = generateSupermarketKeys;
 exports.getPublicKey = getPublicKey;
+exports.getPrivateKey = getPrivateKey;
 exports.createPurchase = createPurchase;
 exports.getPurchaseByUserId = getPurchaseByUserId;
 exports.createVoucherByUserId = createVoucherByUserId;
