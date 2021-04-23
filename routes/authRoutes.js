@@ -65,4 +65,10 @@ router.post('/logout', bodyParser, function (req, res, next) {
     res.json({ auth: false, token: null });
 });
 
+router.put('/userPkChanged/:userId', bodyParser, function (req, res, next) {
+    userController.updatePublicKeyByUserId(req, (result) => {
+        res.send("Updated with success");
+    });
+});
+
 module.exports = router;
