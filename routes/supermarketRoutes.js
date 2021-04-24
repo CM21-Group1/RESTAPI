@@ -6,6 +6,13 @@ const bodyParser = require('body-parser').json();
 
 let resultCreatePurchase;
 
+const admin = require('firebase-admin');
+const serviceAccount = require("../acme-dfe8d-firebase-adminsdk-s81uo-cd3e6644b8.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
 router.get('/keys', bodyParser, function (req, res, next) {
 
     superMarketController.generateSupermarketKeys(req, (result) => {
@@ -39,6 +46,31 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
         next();
     });
 });
+
+// SEND PUSH NOTIFICATION
+router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    let topic = req.params.userId;
+    let message = {
+        data: {
+            "title": 'TEST',
+            "body": 'Purchase Made'
+        },
+        topic: topic
+    };
+
+// Send a message to devices subscribed to the provided topic.
+    admin.messaging().send(message)
+        .then((response) => {
+            // Response is a message ID string.
+            console.log('Successfully sent message:', response);
+        })
+        .catch((error) => {
+            console.log('Error sending message:', error);
+        });
+
+    res.send("Acme Electronic  Supermarket - REST API");
+});
+//////
 
 // NAO TESTADO
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
@@ -79,6 +111,7 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
         res.send(result);
     });
 });
+
 
 // ----------------------------------------------------------------------POST-CREATE PURCHASE----------------------------------------------------------------------
 
