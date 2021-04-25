@@ -38,6 +38,27 @@ router.get('/purchase/:userId', bodyParser, function (req, res, next) {
     });
 });
 
+// EXAMPLE-----------------------------------------
+
+router.post('/purchaseFake', bodyParser, function (req, res, next) {
+    // const obj = JSON.parse(req.body['original']);
+    // console.log(obj);
+    //
+    // let privateKey = crypto.createPrivateKey({
+    //     'key': encodedPrivateKeyString,
+    //     'format': 'pem',
+    //     'type': 'pkcs8',
+    //     'cipher': 'aes-256-cbc',
+    //     'passphrase': 'passphrase'
+    // });
+    //
+    // // validation of the signature
+    // req.body = obj;
+    console.log(req.body)
+});
+
+// EXAMPLE-----------------------------------------
+
 // ----------------------------------------------------------------------POST-CREATE PURCHASE----------------------------------------------------------------------
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
