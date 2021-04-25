@@ -5,6 +5,7 @@ const superMarketController = require('../controllers/supermarketController');
 const bodyParser = require('body-parser').json();
 
 let user;
+let superMarketKeyFromDb;
 
 router.post('/register', bodyParser, function (req, res, next) {
 
@@ -57,6 +58,7 @@ router.post('/login', bodyParser, function (req, res, next) {
                 // let username = result[0].username;   //username from db
                 // console.log(id)
                 // res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
+                superMarketKeyFromDb = superMarketPublicKey;
                 next();
             });
         }
@@ -69,7 +71,7 @@ router.post('/login', bodyParser, function (req, res, next) {
     userController.updatePublicKeyByUserId(req, (result) => {
         let id = user[0]._id;        //id from db
         let username = user[0].username;
-        res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
+        res.json({ auth: true, id: id, username: username, superPKey: superMarketKeyFromDb});
     });
 
 });
