@@ -4,6 +4,8 @@ const userController = require('../controllers/userController');
 const superMarketController = require('../controllers/supermarketController');
 const bodyParser = require('body-parser').json();
 
+let user;
+
 router.post('/register', bodyParser, function (req, res, next) {
 
     userController.getUserByUsername(req, (result) => {
@@ -49,14 +51,25 @@ router.post('/login', bodyParser, function (req, res, next) {
         if(result === undefined || result == null || result.length <= 0){
             res.status(404).send({ message: "Password incorrect" });
         }else{
-
+            user = result;
             superMarketController.getPublicKey(req, (superMarketPublicKey) => {
-                let id = result[0]._id;        //id from db
-                let username = result[0].username;   //username from db
-                console.log(id)
-                res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
+                // let id = result[0]._id;        //id from db
+                // let username = result[0].username;   //username from db
+                // console.log(id)
+                // res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
+                next();
             });
         }
+    });
+
+});
+
+router.post('/login', bodyParser, function (req, res, next) {
+
+    userController.updatePublicKeyByUserId(req, (result) => {
+        let id = user[0]._id;        //id from db
+        let username = user[0].username;
+        res.json({ auth: true, id: id, username: username, superPKey: superMarketPublicKey});
     });
 
 });
