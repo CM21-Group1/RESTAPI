@@ -154,4 +154,10 @@ router.post('/product', bodyParser, function (req, res, next) {
     });
 });
 
+router.put('/updatePublicKey', bodyParser, function (req, res, next) {
+    superMarketController.updateSupermarketPublicKey(req, (result) => {
+        res.send(result);
+    });
+});
+
 module.exports = router;

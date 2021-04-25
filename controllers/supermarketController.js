@@ -23,7 +23,6 @@ function generateSupermarketKeys(req, callback) {
     // console.log(publicKey);
 
     new Supermarket({
-        privateKey: privateKey,
         publicKey: publicKey
     }).save().then(r => {callback(r)});
 }
@@ -147,6 +146,20 @@ function removeVoucherById(req, callback) {
     });
 }
 
+function updateSupermarketPublicKey(req, callback) {
+    let id = "6085c20769d026168cd87c60"
+    let o_id = new ObjectId(id);
+    console.log(req.body.publicKey);
+    Supermarket.findOneAndUpdate({_id: o_id}, {"publicKey": req.body.publicKey}, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        callback(result);
+    });
+}
+
+exports.updateSupermarketPublicKey = updateSupermarketPublicKey;
 exports.generateSupermarketKeys = generateSupermarketKeys;
 exports.getPublicKey = getPublicKey;
 exports.getPrivateKey = getPrivateKey;
