@@ -68,7 +68,7 @@ router.post('/login', bodyParser, function (req, res, next) {
 
 router.post('/login', bodyParser, function (req, res, next) {
 
-    userController.updatePublicKeyByUserId(req, (result) => {
+    userController.updatePublicKeyByUsername(req, (result) => {
         let id = user[0]._id;        //id from db
         let username = user[0].username;
         res.json({ auth: true, id: id, username: username, superPKey: superMarketKeyFromDb});
