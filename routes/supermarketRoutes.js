@@ -83,6 +83,7 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
         resultCreatePurchase = result;
         next();
     });
+    next();
 });
 
 // SEND PUSH NOTIFICATION
@@ -106,33 +107,26 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
             console.log('Error sending message:', error);
         });
 
-    res.send("Acme Electronic  Supermarket - REST API");
+    next();
 });
-//////
 
-// NAO TESTADO
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     if(req.body.voucherId != null){
         superMarketController.removeVoucherById(req, (result) => {
             next();
         });
+        console.log("Voucher removido");
+        next();
     }else{
         next();
     }
 });
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
-    req.body.value = resultCreatePurchase.totalPrice;
-    userController.updateAccumulatedValue(req, (result) => {
-        next();
-    });
-});
-
-router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     userController.getUserById(req, (result) => {
-        let num_vouchers = Math.floor((result.accumulatedValue + resultCreatePurchase['totalPrice']) / 100);
+        let num_vouchers = Math.floor((result.accumulatedValue + req.body.totalPrice) / 100);
 
-        let accu_value_new = (result.accumulatedValue + resultCreatePurchase['totalPrice'] - (num_vouchers * 100)) % 100;
+        let accu_value_new = (result.accumulatedValue + req.body.totalPrice - (num_vouchers * 100)) % 100;
 
         req.body.value = accu_value_new;
         userController.updateAccumulatedValue(req, (result) => {
@@ -141,6 +135,7 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
             next();
         });
     });
+
 });
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
