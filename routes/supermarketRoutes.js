@@ -83,7 +83,6 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
         resultCreatePurchase = result;
         next();
     });
-    next();
 });
 
 // SEND PUSH NOTIFICATION
@@ -115,8 +114,6 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
         superMarketController.removeVoucherById(req, (result) => {
             next();
         });
-        console.log("Voucher removido");
-        next();
     }else{
         next();
     }
