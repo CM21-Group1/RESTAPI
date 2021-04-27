@@ -31,8 +31,6 @@ app.use(bodyParser.json());
 // var ver = verifier.verify(publicKey, sign,'base64');
 // console.log(ver);
 
-
-
 /*
 var privateKey = '-----BEGIN RSA PRIVATE KEY-----\n'+
 'MIICXQIBAAKBgQDCtTEic76GBqUetJ1XXrrWZcxd8vJr2raWRqBjbGpSzLqa3YLv\n'+

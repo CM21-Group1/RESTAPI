@@ -78,6 +78,7 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
 });
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    req.body = req.body.message;
     superMarketController.createPurchase(req, (result) => {
         resultCreatePurchase = result;
         next();
