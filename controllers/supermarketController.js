@@ -18,10 +18,6 @@ const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
 });
 
 function generateSupermarketKeys(req, callback) {
-
-    // console.log(privateKey);
-    // console.log(publicKey);
-
     new Supermarket({
         publicKey: publicKey
     }).save().then(r => {callback(r)});

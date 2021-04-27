@@ -4,8 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const config = require('config');
-const crypto = require('crypto');
-const rsa = require('node-rsa');
+
 
 mongoose.connect(config.DBHost, { useUnifiedTopology: true, useNewUrlParser: true });
 
@@ -19,18 +18,18 @@ app.use(bodyParser.json());
 //############################################################################################################################################
 //############################################################################################################################################
 
-var publicKey = '-----BEGIN PUBLIC KEY-----\n'+
-'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyCtxfK4QUfRF1ej5+FlRb6wk8taLICBNbtqver9M6WzAY7JwbTqH5Mz9+9CMeKCDILoJpIHWVXPgmq+UvwXtH/3c09CYXqRv4WDp+HJA37jlnPW1tJNjkWnN8CC4MixSUq3I8JJ501Ff5c3vc03Ws7OSZUUua/PTpnHUUMDKU4BSQ5576S2413YSTvl6ggNhNRCUAppLyMRteO/0ykyL2IUO/vdvPF/o8Gg0fOlldx6px1MQURYFAW9TPJe42UUgKWtH9gQ06TjhCbUKLTnPI8QbWRB/6hYiQ6rgAX+G85Bm6FR2mV5O6ScLCz9o9uHXSCdRwUlg1WUFTpgpG4Zt4wIDAQAB\n'+
-'-----END PUBLIC KEY-----';
-
-var mensagem = '{"userId": "608573888915f60015e1c445", "products": [{"_id": "Teste", "name": "test", "price": 0.3586371799442135, "quantity": 1}], "totalPrice": 0.3586371799442135}';
-
-var sign = "Bca5lrvF0Rxha33H6fhuAbvD72ST6DOMscBmIuRqJxEhcUg9Zg0n1L19dtnENkb99APm6AjKiYpSb6UNaL9xLZ6YUeppTTFUEKoQEIpwxLTpKCX3oMA073vOY9Gbr9bUaGSRtRilVjIZLeG//xwqXgpGttWnv44BYxAzGpD4Jz8xh2Hb1cYZlfr8RUlCWhPxx+LHogr9+yawJJmxddjYfmFAQk7Kgjf2jjaFElDdPqPWcMLnJg98F+R0g4F/QGHqWBZgw0ejB9K2ucuiCQg3euTyFfNxqpTqCqZzPc8RuDsnDmPXuruet9oiXaK06OEH9Yv/6qyDYNm6wn03CxqLwQ==";
-
-var verifier = crypto.createVerify('sha256');
-verifier.update(mensagem);
-var ver = verifier.verify(publicKey, sign,'base64');
-console.log(ver);
+// var publicKey = '-----BEGIN PUBLIC KEY-----\n'+
+// 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyCtxfK4QUfRF1ej5+FlRb6wk8taLICBNbtqver9M6WzAY7JwbTqH5Mz9+9CMeKCDILoJpIHWVXPgmq+UvwXtH/3c09CYXqRv4WDp+HJA37jlnPW1tJNjkWnN8CC4MixSUq3I8JJ501Ff5c3vc03Ws7OSZUUua/PTpnHUUMDKU4BSQ5576S2413YSTvl6ggNhNRCUAppLyMRteO/0ykyL2IUO/vdvPF/o8Gg0fOlldx6px1MQURYFAW9TPJe42UUgKWtH9gQ06TjhCbUKLTnPI8QbWRB/6hYiQ6rgAX+G85Bm6FR2mV5O6ScLCz9o9uHXSCdRwUlg1WUFTpgpG4Zt4wIDAQAB\n'+
+// '-----END PUBLIC KEY-----';
+//
+// var mensagem = '{"userId": "608573888915f60015e1c445", "products": [{"_id": "Teste", "name": "test", "price": 0.3586371799442135, "quantity": 1}], "totalPrice": 0.3586371799442135}';
+//
+// var sign = "Bca5lrvF0Rxha33H6fhuAbvD72ST6DOMscBmIuRqJxEhcUg9Zg0n1L19dtnENkb99APm6AjKiYpSb6UNaL9xLZ6YUeppTTFUEKoQEIpwxLTpKCX3oMA073vOY9Gbr9bUaGSRtRilVjIZLeG//xwqXgpGttWnv44BYxAzGpD4Jz8xh2Hb1cYZlfr8RUlCWhPxx+LHogr9+yawJJmxddjYfmFAQk7Kgjf2jjaFElDdPqPWcMLnJg98F+R0g4F/QGHqWBZgw0ejB9K2ucuiCQg3euTyFfNxqpTqCqZzPc8RuDsnDmPXuruet9oiXaK06OEH9Yv/6qyDYNm6wn03CxqLwQ==";
+//
+// var verifier = crypto.createVerify('sha256');
+// verifier.update(mensagem);
+// var ver = verifier.verify(publicKey, sign,'base64');
+// console.log(ver);
 
 
 

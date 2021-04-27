@@ -3,8 +3,10 @@ const router = express.Router();
 const superMarketController = require('../controllers/supermarketController');
 const userController = require('../controllers/userController');
 const bodyParser = require('body-parser').json();
+const crypto = require('crypto');
 
 let resultCreatePurchase;
+let pubKey;
 
 const admin = require('firebase-admin');
 const serviceAccount = require("../acme-dfe8d-firebase-adminsdk-s81uo-cd3e6644b8.json");
@@ -41,25 +43,39 @@ router.get('/purchase/:userId', bodyParser, function (req, res, next) {
 // EXAMPLE-----------------------------------------
 
 router.post('/purchaseFake', bodyParser, function (req, res, next) {
-    // const obj = JSON.parse(req.body['original']);
-    // console.log(obj);
-    //
-    // let privateKey = crypto.createPrivateKey({
-    //     'key': encodedPrivateKeyString,
-    //     'format': 'pem',
-    //     'type': 'pkcs8',
-    //     'cipher': 'aes-256-cbc',
-    //     'passphrase': 'passphrase'
-    // });
-    //
-    // // validation of the signature
-    // req.body = obj;
-    console.log(req.body)
+    let userId = req.body.message.userId;
+    let pubKey;
+    req.body.userId = userId;
+    userController.getUserPublicKeyById(req, (result)=>{
+        pubKey = result.publicKey;
+        console.log(pubKey);
+    });
 });
 
 // EXAMPLE-----------------------------------------
 
 // ----------------------------------------------------------------------POST-CREATE PURCHASE----------------------------------------------------------------------
+router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    userController.getUserPublicKeyById(req, (result)=>{
+        pubKey = '-----BEGIN PUBLIC KEY-----\n'+result.publicKey+'\n-----END PUBLIC KEY-----';
+        next();
+    });
+});
+
+router.post('/purchase/:userId', bodyParser, function (req, res, next) {
+    let message = req.body.message;
+    let message_str = JSON.stringify(message);
+    let signature = req.body.signature;
+    let signature_str = JSON.stringify(signature);
+    let verifier = crypto.createVerify('sha256');
+    verifier.update(message_str);
+    let ver = verifier.verify(pubKey, signature_str,'base64');
+    if(ver){
+        next()
+    }else{
+        res.send("Authentication failed.");
+    }
+});
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     superMarketController.createPurchase(req, (result) => {

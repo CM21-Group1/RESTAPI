@@ -38,6 +38,19 @@ function getUserById(req, callback) {
     });
 }
 
+function getUserPublicKeyById(req, callback) {
+    let user_id = req.params.userId;
+    let o_id = new ObjectId(user_id);
+
+    User.findById(o_id, (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        callback(result);
+    });
+}
+
 function updatePublicKeyByUsername(req, callback) {
     User.findOneAndUpdate({username: req.body.username}, {"publicKey": req.body.publicKey}, (err, result) => {
         if (err) {
@@ -91,3 +104,4 @@ exports.getUserByUsername = getUserByUsername;
 exports.getUserPwd = getUserPwd;
 exports.updateAccumulatedValue = updateAccumulatedValue;
 exports.updatePublicKeyByUsername = updatePublicKeyByUsername;
+exports.getUserPublicKeyById = getUserPublicKeyById;
