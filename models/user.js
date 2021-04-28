@@ -7,7 +7,7 @@ let userSchema = new Schema({
     password: {type: String, required: true},
     payment_card: {type: String, required: true},
     publicKey: {type: String, required: false},
-    accumulatedValue: {type: Number, required: false},
+    accumulatedValue: {type: String, required: false},
     vouchers: [{
         userId: {type: String, required: false}
     }],

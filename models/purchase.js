@@ -5,11 +5,11 @@ let purchaseSchema = new Schema({
     userId: {type: String, required: true},
     products: [{
         _id: {type: String, required: false},
-        price: {type: Number, required: false},
+        price: {type: String, required: false},
         name: {type: String, required: false}
     }],
-    totalPrice: {type: Number, required: false},
-    voucherId: {type: Number, required: false},
+    totalPrice: {type: String, required: false},
+    voucherId: {type: String, required: false},
     createdAt: {type: Date, default: Date.now, required: false}
 });
 

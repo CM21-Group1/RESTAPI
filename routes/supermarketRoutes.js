@@ -121,14 +121,20 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     userController.getUserById(req, (result) => {
-        let num_vouchers = Math.floor((result.accumulatedValue + req.body.totalPrice) / 100);
+        let accumulatedValue = parseFloat(result.accumulatedValue);
+        let totalPrice = parseFloat(req.body.totalPrice);
 
-        let accu_value_new = (result.accumulatedValue + req.body.totalPrice - (num_vouchers * 100)) % 100;
+        // let num_vouchers = Math.floor((result.accumulatedValue + req.body.totalPrice) / 100);
+        let num_vouchers = Math.floor((accumulatedValue + totalPrice) / 100);
 
-        req.body.value = accu_value_new;
+        // let accu_value_new = (result.accumulatedValue + req.body.totalPrice - (num_vouchers * 100)) % 100;
+        let accu_value_new = (accumulatedValue + totalPrice - (num_vouchers * 100)) % 100;
+        let accu_value_new_str = accu_value_new.toString();
+
+        req.body.value = accu_value_new_str;
         userController.updateAccumulatedValue(req, (result) => {
             console.log(num_vouchers);
-            console.log(accu_value_new);
+            console.log(accu_value_new_str);
             next();
         });
     });
