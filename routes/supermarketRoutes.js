@@ -144,7 +144,6 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
 
 router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     superMarketController.createVoucherByUserId(req, (result) => {
-        console.log("voucher criado");
         res.send(result);
     });
 });

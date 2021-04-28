@@ -116,18 +116,22 @@ function createVoucherByUserId(req, callback) {
     let userId = req.params.userId;
     let numVouchers = req.body.numVouchers;
     let resultTemp;
+    let error = "No voucher";
 
     let body = {
         userId: userId
     }
 
-    for (let i = 1; i <= numVouchers; i++) {
-        let voucher = new Voucher(body);
-        voucher.save(function (err, result) {
-            resultTemp = result;
-        });
+    if(numVouchers !== 0){
+        for (let i = 1; i <= numVouchers; i++) {
+            let voucher = new Voucher(body);
+            voucher.save(function (err, result) {
+                resultTemp = result;
+            });
+        }
+        callback(resultTemp);
     }
-    callback(resultTemp);
+    callback(error);
 }
 
 function removeVoucherById(req, callback) {
