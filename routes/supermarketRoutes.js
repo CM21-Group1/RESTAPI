@@ -132,6 +132,7 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
         let accu_value_new_str = accu_value_new.toString();
 
         req.body.value = accu_value_new_str;
+        req.body.numVouchers = num_vouchers;
         userController.updateAccumulatedValue(req, (result) => {
             console.log(num_vouchers);
             console.log(accu_value_new_str);
