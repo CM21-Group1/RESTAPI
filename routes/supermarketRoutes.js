@@ -90,8 +90,8 @@ router.post('/purchase/:userId', bodyParser, function (req, res, next) {
     let topic = req.params.userId;
     let message = {
         data: {
-            "title": 'TEST',
-            "body": 'Purchase Made'
+            "title": 'Purchase ACME APP',
+            "body": 'Congratulations! You made a purchase.'
         },
         topic: topic
     };
