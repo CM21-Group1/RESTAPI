@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const config = require('config');
+const crypto = require('crypto');
 
 
 mongoose.connect(config.DBHost, { useUnifiedTopology: true, useNewUrlParser: true });
@@ -62,10 +63,121 @@ var sign = signer.sign(privateKey,'base64');
 var verifier = crypto.createVerify('sha256WithRSAEncryption');
 verifier.update('hola');
 var ver = verifier.verify(publicKey, sign,'base64');
-console.log(ver);
+console.log(ver);*/
 
 
-*/
+
+/*const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+	// The standard secure default length for RSA keys is 2048 bits
+	modulusLength: 2048,
+});
+
+const data = "my secret data"
+
+const encryptedData = crypto.publicEncrypt(
+	{
+		key: publicKey,
+		padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+		oaepHash: "sha256",
+	},
+	// We convert the data string to a buffer using `Buffer.from`
+	Buffer.from(data)
+)
+
+console.log("encypted data: ", encryptedData.toString("base64"));
+console.log(privateKey.toString())
+
+const result = crypto.exportKey("jwk", privateKey);
+
+console.log(result)*/
+
+//const crypto = require('crypto')
+
+/*const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+	modulusLength: 2048,
+});
+
+const privateKeyExport = privateKey.export({
+    format: 'pem',
+    type: 'pkcs1'
+})
+
+console.log(privateKeyExport)
+
+console.log(Buffer.from(privateKeyExport.trim("-----END PUBLIC KEY-----").trim("-----BEGIN PUBLIC KEY-----")).toString('base64'));
+
+const encryptedData = crypto.publicEncrypt(
+	{
+		key: publicKey,
+		padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+	},
+	
+	Buffer.from("Teste")
+)
+
+console.log("encypted data: ", encryptedData.toString("base64"));
+
+
+
+// assuming you have a private.key file that begins with '-----BEGIN RSA PRIVATE KEY-----...'
+/*const privateKey = fs.readFileSync('./private.key')
+
+const pubKeyObject = crypto.createPublicKey({
+    key: privateKey,
+    format: 'pem'
+})
+
+const publicKey = pubKeyObject.export({
+    format: 'pem',
+    type: 'spki'
+})
+
+// -----BEGIN PUBLIC KEY-----... 
+console.log(publicKey)  */
+
+const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+	// The standard secure default length for RSA keys is 2048 bits
+	modulusLength: 2048,
+})
+
+const data = "my secret data"
+
+const encryptedData = crypto.publicEncrypt(
+	{
+		key: publicKey,
+		padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+		oaepHash: "sha256",
+	},
+	// We convert the data string to a buffer using `Buffer.from`
+	Buffer.from(data)
+)
+
+console.log(encryptedData.toString("base64"));
+
+const decryptedData = crypto.privateDecrypt(
+	{
+		key: privateKey,
+		// In order to decrypt the data, we need to specify the
+		// same hashing function and padding scheme that we used to
+		// encrypt the data in the previous step
+		padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+		oaepHash: "sha256",
+	},
+	encryptedData
+)
+
+const teste = privateKey.export({
+    format: 'pem',
+    type: 'pkcs8'
+})
+
+// The decrypted data is of the Buffer type, which we can convert to a
+// string to reveal the original data
+console.log("decrypted data: ", decryptedData.toString())
+
+console.log(teste);
+
+
 //############################################################################################################################################
 //############################################################################################################################################
 //############################################################################################################################################
