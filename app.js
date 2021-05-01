@@ -14,6 +14,29 @@ app.use(cookieParser());
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json());
 
+
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
+const homeRoutes = require('./routes/userRoutes');
+app.use('/', homeRoutes);
+
+const authRoutes = require('./routes/authRoutes');
+app.use('/auth', authRoutes);
+
+const productRoutes = require('./routes/productRoutes');
+app.use('/product', productRoutes);
+
+const supermarketRoutes = require('./routes/supermarketRoutes');
+app.use('/sp', supermarketRoutes);
+
+module.exports = app;
+
+
 // TESTING!!!!!!!!!!!!!!!!!!
 //############################################################################################################################################
 //############################################################################################################################################
@@ -133,7 +156,7 @@ const publicKey = pubKeyObject.export({
 })
 
 // -----BEGIN PUBLIC KEY-----... 
-console.log(publicKey)  */
+console.log(publicKey)  
 
 const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
 	// The standard secure default length for RSA keys is 2048 bits
@@ -175,30 +198,9 @@ const teste = privateKey.export({
 // string to reveal the original data
 console.log("decrypted data: ", decryptedData.toString())
 
-console.log(teste);
+console.log(teste);*/
 
 
 //############################################################################################################################################
 //############################################################################################################################################
 //############################################################################################################################################
-
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-
-const homeRoutes = require('./routes/userRoutes');
-app.use('/', homeRoutes);
-
-const authRoutes = require('./routes/authRoutes');
-app.use('/auth', authRoutes);
-
-const productRoutes = require('./routes/productRoutes');
-app.use('/product', productRoutes);
-
-const supermarketRoutes = require('./routes/supermarketRoutes');
-app.use('/sp', supermarketRoutes);
-
-module.exports = app;
